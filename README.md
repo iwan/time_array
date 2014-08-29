@@ -1,5 +1,9 @@
 # TimeArray
 
+[![Build Status](https://travis-ci.org/iwan/time_array.png)](https://travis-ci.org/iwan/time_array)
+[![Coverage Status](https://img.shields.io/coveralls/iwan/time_array.svg)](https://coveralls.io/r/iwan/time_array)
+
+
 TODO: Write a gem description
 
 ## Installation
