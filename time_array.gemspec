@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = TimeArray::VERSION
   spec.authors       = ["Iwan Buetti"]
   spec.email         = ["iwan.buetti@gmail.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
-  spec.homepage      = ""
+  spec.summary       = %q{Some tools to deal with time based arrays}
+  # spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.homepage      = "https://github.com/iwan/time_array"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
@@ -20,4 +20,14 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "bundler", "~> 1.6"
   spec.add_development_dependency "rake"
+  
+  spec.add_development_dependency "rspec"
+  spec.add_development_dependency "rspec-nc"
+  spec.add_development_dependency "guard"
+  spec.add_development_dependency "guard-rspec"
+  spec.add_development_dependency "pry"
+  spec.add_development_dependency "pry-remote"
+  spec.add_development_dependency "pry-nav"
+
+  spec.add_development_dependency "coveralls"
 end
