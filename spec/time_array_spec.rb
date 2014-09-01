@@ -55,4 +55,35 @@ RSpec.describe 'time array' do
     expect(a1.size).to eq(3)
     expect(TimeArray::TimeArray.new("2013").size).to eq(0)
   end
+
+  it 'sum values' do
+    time_arr = TimeArray::TimeArray.new("2013", [0,1,2,-3,0,2,-1])
+    expect(time_arr.sum).to eq(1)
+    expect(time_arr.sum).to eq(1.0)
+    expect(time_arr.sum(values: :all)).to eq(1)
+    expect(time_arr.sum(values: 'all')).to eq(1)
+    expect(time_arr.sum(values: :non_zero)).to eq(1)
+
+    expect(time_arr.sum(values: :positive)).to eq(5)
+    expect(time_arr.sum(values: :non_positive)).to eq(-4)
+    expect(time_arr.sum(values: :negative)).to eq(-4)
+    expect(time_arr.sum(values: :non_negative)).to eq(5)
+    expect(time_arr.sum(values: :zero)).to eq(0)
+  end
+
+  it 'count values' do
+    time_arr = TimeArray::TimeArray.new("2013", [0,1,2,-3,0,2,-1])
+    expect(time_arr.count).to eq(7)
+    expect(time_arr.count).to eq(7.0)
+    expect(time_arr.count(values: :all)).to eq(7)
+    expect(time_arr.count(values: 'all')).to eq(7)
+
+    expect(time_arr.count(values: :positive)).to eq(3)
+    expect(time_arr.count(values: :non_positive)).to eq(4)
+    expect(time_arr.count(values: :negative)).to eq(2)
+    expect(time_arr.count(values: :non_negative)).to eq(5)
+    expect(time_arr.count(values: :zero)).to eq(2)
+    expect(time_arr.count(values: :non_zero)).to eq(5)
+  end
+
 end

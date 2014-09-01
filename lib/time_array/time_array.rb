@@ -27,6 +27,7 @@ module TimeArray
       TimeArray.new(@start_time, (@v.clone rescue Vector.new), zone: Time.zone.name)
     end
 
+    # Set all vector values to a new value
     def all_to(new_value)
       @v = Vector.new(@v.size, new_value)
       # @v.map!{|e| e=new_value}
@@ -36,6 +37,49 @@ module TimeArray
     def size
       @v.size
     end
+
+
+    # get the sum of the values
+    def sum(options = {})
+      if options[:values]
+        opt = options[:values].to_sym
+        case opt
+        when :positive, :non_negative
+          @v.sum_positive
+        when :negative, :non_positive
+          @v.sum_negative
+        when :zero
+          0.0
+        when :all, :non_zero
+          @v.sum_all
+        else
+          raise ArgumentError, "Option '#{opt}' not recognized"
+        end
+      else
+        @v.sum_all
+      end
+    end
+
+    # alias :+ :sum
+
+    # Count the values
+    def count(options = {})
+      if options[:values]
+        raise ArgumentError, "Option not recognized" if !%w(positive negative non_positive non_negative non_zero zero all).include?(options[:values].to_s)
+        @v.send("count_"+options[:values].to_s)
+      else
+        @v.count_all
+      end
+    end
+
+
+    # Return the average of values
+    def avg(options = {})
+      c = count(options)
+      return nil if c.zero? # if the array is empty will be returned nil
+      sum(options) / c
+    end
+
 
     private
 
