@@ -1,5 +1,9 @@
 module TimeArray
   class Vector < Array
+    def clone
+      Vector.new(self)
+    end
+
     def sum_all
       inject(0.0){|total, n| total + (n||0.0) }
     end

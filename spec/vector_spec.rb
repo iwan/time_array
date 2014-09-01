@@ -43,4 +43,9 @@ RSpec.describe 'vector' do
   it 'count zero elements' do
     expect(v1.count_all).to eq(7)
   end
+
+  it 'clone' do
+    expect(v1.clone).not_to equal(v1)
+    expect(v1.clone).to eq(v1)
+  end
 end

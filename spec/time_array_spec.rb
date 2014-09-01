@@ -34,4 +34,14 @@ RSpec.describe 'time array' do
     expect(TimeArray::TimeArray.new("2013-03-04", [1,2,3], zone: "Rome").start_time.to_s).to eq("2013-03-04 00:00:00 +0100")
     expect(TimeArray::TimeArray.new("2013-03-04 13", [1,2,3], zone: "Rome").start_time.to_s).to eq("2013-03-04 13:00:00 +0100")
   end
+
+  it 'clone' do
+    orig = TimeArray::TimeArray.new("2013", [1,2,3], zone: "Rome")
+    cloned = orig.clone
+    expect(orig.start_time).to equal(orig.start_time)
+    expect(cloned.start_time).not_to equal(orig.start_time)
+    expect(cloned.v).not_to equal(orig.v)
+    # expect(cloned.time_zone).not_to equal(orig.time_zone) # why?
+    
+  end
 end

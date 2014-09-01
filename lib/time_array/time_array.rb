@@ -23,6 +23,13 @@ module TimeArray
       Time.zone
     end
 
+    def clone
+      TimeArray.new(@start_time, (@v.clone rescue Vector.new), zone: Time.zone.name)
+    end
+
+    def all_to(new_value)
+      @v.map{|e| e=new_value}
+    end
 
     private
 
