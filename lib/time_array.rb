@@ -1,10 +1,14 @@
-require "time_array/version"
-
 %w(
-    version
-  ).each { |file| require File.join(File.dirname(__FILE__), 'time_array', file) }
+  version
+  vector
+  time_array
+  hour_array
+  array_ext
+  units
+).each { |file| require File.join(File.dirname(__FILE__), 'time_array', file) }
 
 
-module TimeArray
-  # Your code goes here...
+class Array
+  include TimeArray::ArrayExt
 end
+
