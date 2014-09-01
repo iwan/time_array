@@ -1,6 +1,6 @@
 module TimeArray
   module Units
-    LIST = %i(hour day month year)
+    LIST = [:hour, :day, :month, :year]
 
     def self.valid?(u)
       LIST.include?(u.to_sym)
