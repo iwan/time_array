@@ -8,7 +8,7 @@ module TimeArray
   class TimeArray
     attr_reader :start_time, :v, :unit
 
-    def initialize(start_time, values=[], options={})
+    def initialize(start_time, values=Vector.new, options={})
       manage_options(options)
       set_start_time start_time
       set_values     values      
@@ -28,7 +28,13 @@ module TimeArray
     end
 
     def all_to(new_value)
-      @v.map{|e| e=new_value}
+      @v = Vector.new(@v.size, new_value)
+      # @v.map!{|e| e=new_value}
+      self
+    end
+
+    def size
+      @v.size
     end
 
     private

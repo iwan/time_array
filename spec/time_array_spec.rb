@@ -7,6 +7,7 @@ RSpec.describe 'time array' do
 
   it 'init' do
     expect(a1).to be_an_instance_of(TimeArray::TimeArray)
+    expect(a1.v).to be_an_instance_of(TimeArray::Vector)
   end
 
   it 'unit option on initialize' do
@@ -43,5 +44,15 @@ RSpec.describe 'time array' do
     expect(cloned.v).not_to equal(orig.v)
     # expect(cloned.time_zone).not_to equal(orig.time_zone) # why?
     
+  end
+
+  it 'set all values to' do
+    x = 3.4
+    expect(a1.all_to(x).v).to eq(Array.new(a1.size, x))
+  end
+
+  it 'get values size' do
+    expect(a1.size).to eq(3)
+    expect(TimeArray::TimeArray.new("2013").size).to eq(0)
   end
 end
