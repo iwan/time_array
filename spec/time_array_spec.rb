@@ -4,8 +4,7 @@ RSpec.describe 'time array' do
   subject(:a1) { TimeArray::TimeArray.new("2013", [1,2,3], zone: "Rome", unit: :hour) }
   values = [1,2,3]
   subject(:v1) { [0,1,2,-3,0,2,-1] }
-  subject(:time_arr) { TimeArray::TimeArray.new("2013", v1)
- }
+  subject(:time_arr) { TimeArray::TimeArray.new("2013", v1) }
 
 
   it 'init' do
@@ -127,5 +126,15 @@ RSpec.describe 'time array' do
 
   it 'clear data' do
     expect(time_arr.clear_data.empty?).to eq(true)
+  end
+
+  it 'aligned with' do
+    a2 = TimeArray::TimeArray.new("2013", [1,2,3], zone: "Rome")
+    a3 = TimeArray::TimeArray.new("2013", [0,3,0], zone: "Rome")
+    expect(a2.aligned_with?(a3)).to eq(true)
+    expect(a2.aligned_with?(TimeArray::TimeArray.new("2013", [0,3], zone: "Rome"))).to eq(false)
+    expect(a2.aligned_with?(TimeArray::TimeArray.new("2013", [0,3,4], zone: "London"))).to eq(false)
+    expect(a2.aligned_with?(TimeArray::TimeArray.new("2012", [0,3,4], zone: "Rome"))).to eq(false)
+
   end
 end

@@ -119,6 +119,11 @@ module TimeArray
       self
     end
 
+    def aligned_with?(other_array)
+      self.start_time==other_array.start_time && @v.size==other_array.size
+    end
+
+
 
     private
 
