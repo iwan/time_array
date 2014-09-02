@@ -3,7 +3,8 @@ require 'spec_helper'
 RSpec.describe 'time array' do
   subject(:a1) { TimeArray::TimeArray.new("2013", [1,2,3], zone: "Rome", unit: :hour) }
   values = [1,2,3]
-  subject(:time_arr) { TimeArray::TimeArray.new("2013", [0,1,2,-3,0,2,-1])
+  subject(:v1) { [0,1,2,-3,0,2,-1] }
+  subject(:time_arr) { TimeArray::TimeArray.new("2013", v1)
  }
 
 
@@ -114,4 +115,17 @@ RSpec.describe 'time array' do
     expect(TimeArray::TimeArray.new("2013", [0.0, 1.23456, nil]).round!(2).v).to be_an_instance_of(TimeArray::Vector)
   end
 
+  it 'empty' do
+    expect(time_arr.empty?).to eq(false)
+    expect(TimeArray::TimeArray.new("2013", []).empty?).to eq(true)
+  end
+
+  it 'end time' do
+    st = time_arr.start_time
+    expect(time_arr.end_time).to eq(st+(v1.size-1).hours)
+  end
+
+  it 'clear data' do
+    expect(time_arr.clear_data.empty?).to eq(true)
+  end
 end

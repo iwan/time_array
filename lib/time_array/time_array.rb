@@ -94,11 +94,31 @@ module TimeArray
       nil
     end
 
-
+    # Round every values of the array
     def round!(ndigit=3)
       @v.collect!{|e| e.nil? ? nil : e.round(ndigit)}
       self
     end
+
+    # def xy_array(options={}) # for the moment has been left out
+
+
+
+    def empty?
+      @v.nil? || @v.empty?
+    end
+
+    # Return the time assiociated with the last value
+    def end_time
+      return nil if empty?
+      @start_time + (@v.size-1).hours
+    end
+
+    def clear_data
+      @v = @start_time.nil? ? nil : Vector.new
+      self
+    end
+
 
     private
 
