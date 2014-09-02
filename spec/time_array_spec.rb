@@ -106,6 +106,12 @@ RSpec.describe 'time array' do
     expect(time_arr.min).to eq(-3)
     expect(time_arr.max).to eq(2)
     expect(TimeArray::TimeArray.new("2013", []).max).to be_nil
+    expect(TimeArray::TimeArray.new("2013", []).min).to be_nil
+  end
+
+  it 'round values' do
+    expect(TimeArray::TimeArray.new("2013", [0.0, 1.23456, nil]).round!(2).v).to eq([0.0, 1.23, nil])
+    expect(TimeArray::TimeArray.new("2013", [0.0, 1.23456, nil]).round!(2).v).to be_an_instance_of(TimeArray::Vector)
   end
 
 end

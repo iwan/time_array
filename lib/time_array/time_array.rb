@@ -95,6 +95,11 @@ module TimeArray
     end
 
 
+    def round!(ndigit=3)
+      @v.collect!{|e| e.nil? ? nil : e.round(ndigit)}
+      self
+    end
+
     private
 
     def set_values(data)
