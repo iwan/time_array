@@ -91,6 +91,15 @@ RSpec.describe 'time array' do
   end
 
   it 'average of values' do
-    
+    time_arr = TimeArray::TimeArray.new("2013", [0,1,2,-3,0,2,-1])
+    expect(time_arr.avg).to eq(1.0/7)
+    expect(time_arr.avg(values: :positive)).to eq(5.0/3)
+    expect(time_arr.avg(values: :non_positive)).to eq(-1.0)
+    expect(time_arr.avg(values: :negative)).to eq(-2.0)
+    expect(time_arr.avg(values: :non_negative)).to eq(1.0)
+    expect(time_arr.avg(values: :zero)).to eq(0.0)
+    expect{time_arr.avg(values: :invalid_argument)}.to raise_error(ArgumentError)
+
+    expect(TimeArray::TimeArray.new("2013", [0,1,2,3,0,2,1]).avg(values: :negative)).to be_nil
   end
 end

@@ -73,12 +73,12 @@ module TimeArray
     end
 
 
-    # Return the average of values
-    # def avg(options = {})
-    #   c = count(options)
-    #   return nil if c.zero? # if the array is empty will be returned nil
-    #   sum(options) / c
-    # end
+    # get the average of values
+    def avg(options = {})
+      c = count(options)
+      return nil if c.zero? # if the array is empty will be returned nil
+      sum(options) / c
+    end
 
 
     private
