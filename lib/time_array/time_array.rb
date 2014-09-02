@@ -74,11 +74,11 @@ module TimeArray
 
 
     # Return the average of values
-    def avg(options = {})
-      c = count(options)
-      return nil if c.zero? # if the array is empty will be returned nil
-      sum(options) / c
-    end
+    # def avg(options = {})
+    #   c = count(options)
+    #   return nil if c.zero? # if the array is empty will be returned nil
+    #   sum(options) / c
+    # end
 
 
     private
@@ -109,25 +109,24 @@ module TimeArray
     end
 
 
+
+    # start_time must be a Time (or similar) or a String
+    # valid start_time "yyyy", "yyyy-m", "yyyy-mm", "yyyy-mm-dd", "yyyy-mm-dd yy"
     def read_start_time(start_time)
-      # start_time = Time.zone.now if start_time.nil? # ====
       if start_time.is_a?(String)
         start_time.gsub!("/", "-")
-        begin
-          start_time = Time.zone.parse(start_time)
-        rescue Exception => e
-          case start_time.size
-          when 4
-            start_time = Time.zone.parse("#{start_time}-01-01")
-          when 7
-            start_time = Time.zone.parse("#{start_time}-01")
-          else
-            raise ArgumentError, "Start time not valid"
-          end
-        end
+        start_time = "20#{r[0]}-01-01" if r = start_time.match(/^\d{2}$/) # "yy"
+        start_time = "#{r[0]}-01-01"   if r = start_time.match(/^\d{4}$/) # "yyyy"
+        start_time = "#{r[0]}-01"      if r = start_time.match(/^\d{4}-\d{1,2}$/) # "yyyy-m" or "yyyy-mm"
+        start_time = Time.zone.parse(start_time)
+        raise ArgumentError, "Start time not valid" if start_time.nil?
       end
       start_time
     end
+
+
+
+
 
     def floor_start_time(t, unit=:hour)
       return nil if t.nil?

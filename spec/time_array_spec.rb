@@ -32,8 +32,10 @@ RSpec.describe 'time array' do
 
   it 'start_time on initialize' do
     expect(TimeArray::TimeArray.new("2013", [1,2,3], zone: "Rome").start_time.to_s).to eq("2013-01-01 00:00:00 +0100")
+    expect(TimeArray::TimeArray.new("2013-03", [1,2,3], zone: "Rome").start_time.to_s).to eq("2013-03-01 00:00:00 +0100")
     expect(TimeArray::TimeArray.new("2013-03-04", [1,2,3], zone: "Rome").start_time.to_s).to eq("2013-03-04 00:00:00 +0100")
     expect(TimeArray::TimeArray.new("2013-03-04 13", [1,2,3], zone: "Rome").start_time.to_s).to eq("2013-03-04 13:00:00 +0100")
+    expect{TimeArray::TimeArray.new("foobar", [1,2,3], zone: "Rome").start_time.to_s}.to raise_error(ArgumentError)
   end
 
   it 'clone' do
@@ -56,7 +58,7 @@ RSpec.describe 'time array' do
     expect(TimeArray::TimeArray.new("2013").size).to eq(0)
   end
 
-  it 'sum values' do
+  it 'sum of values' do
     time_arr = TimeArray::TimeArray.new("2013", [0,1,2,-3,0,2,-1])
     expect(time_arr.sum).to eq(1)
     expect(time_arr.sum).to eq(1.0)
@@ -69,9 +71,10 @@ RSpec.describe 'time array' do
     expect(time_arr.sum(values: :negative)).to eq(-4)
     expect(time_arr.sum(values: :non_negative)).to eq(5)
     expect(time_arr.sum(values: :zero)).to eq(0)
+    expect{time_arr.sum(values: :invalid_argument)}.to raise_error(ArgumentError)
   end
 
-  it 'count values' do
+  it 'count of values' do
     time_arr = TimeArray::TimeArray.new("2013", [0,1,2,-3,0,2,-1])
     expect(time_arr.count).to eq(7)
     expect(time_arr.count).to eq(7.0)
@@ -84,6 +87,10 @@ RSpec.describe 'time array' do
     expect(time_arr.count(values: :non_negative)).to eq(5)
     expect(time_arr.count(values: :zero)).to eq(2)
     expect(time_arr.count(values: :non_zero)).to eq(5)
+    expect{time_arr.count(values: :invalid_argument)}.to raise_error(ArgumentError)
   end
 
+  it 'average of values' do
+    
+  end
 end
