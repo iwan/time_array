@@ -73,11 +73,25 @@ module TimeArray
     end
 
 
-    # get the average of values
+    # Get the average of values
     def avg(options = {})
       c = count(options)
       return nil if c.zero? # if the array is empty will be returned nil
       sum(options) / c
+    end
+
+    # Get the minimum value
+    def min
+      @v.compact.min
+    rescue
+      nil
+    end
+
+    # Get the maximum value
+    def max
+      @v.compact.max
+    rescue
+      nil
     end
 
 

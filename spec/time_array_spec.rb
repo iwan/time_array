@@ -3,6 +3,8 @@ require 'spec_helper'
 RSpec.describe 'time array' do
   subject(:a1) { TimeArray::TimeArray.new("2013", [1,2,3], zone: "Rome", unit: :hour) }
   values = [1,2,3]
+  subject(:time_arr) { TimeArray::TimeArray.new("2013", [0,1,2,-3,0,2,-1])
+ }
 
 
   it 'init' do
@@ -59,7 +61,6 @@ RSpec.describe 'time array' do
   end
 
   it 'sum of values' do
-    time_arr = TimeArray::TimeArray.new("2013", [0,1,2,-3,0,2,-1])
     expect(time_arr.sum).to eq(1)
     expect(time_arr.sum).to eq(1.0)
     expect(time_arr.sum(values: :all)).to eq(1)
@@ -75,7 +76,6 @@ RSpec.describe 'time array' do
   end
 
   it 'count of values' do
-    time_arr = TimeArray::TimeArray.new("2013", [0,1,2,-3,0,2,-1])
     expect(time_arr.count).to eq(7)
     expect(time_arr.count).to eq(7.0)
     expect(time_arr.count(values: :all)).to eq(7)
@@ -91,7 +91,6 @@ RSpec.describe 'time array' do
   end
 
   it 'average of values' do
-    time_arr = TimeArray::TimeArray.new("2013", [0,1,2,-3,0,2,-1])
     expect(time_arr.avg).to eq(1.0/7)
     expect(time_arr.avg(values: :positive)).to eq(5.0/3)
     expect(time_arr.avg(values: :non_positive)).to eq(-1.0)
@@ -102,4 +101,11 @@ RSpec.describe 'time array' do
 
     expect(TimeArray::TimeArray.new("2013", [0,1,2,3,0,2,1]).avg(values: :negative)).to be_nil
   end
+
+  it 'minimum and maximum values' do
+    expect(time_arr.min).to eq(-3)
+    expect(time_arr.max).to eq(2)
+    expect(TimeArray::TimeArray.new("2013", []).max).to be_nil
+  end
+
 end
