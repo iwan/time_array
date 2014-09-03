@@ -152,6 +152,7 @@ module TimeArray
       "Start time: #{@start_time}\nData (size: #{@v.size}):\n#{print_values}"
     end
 
+    # mah!
     def until_the_end_of_the_year(fill_value=0.0)
       t = Time.zone.parse("#{@start_time.year+1}-01-01")
       hh = (t-@start_time)/( 60 * 60) # final size
@@ -175,7 +176,40 @@ module TimeArray
       oper(vec, :/)
     end
 
+    def value(index)
+      @v[index]
+    end
+
+    def first_values(number)
+      @v[0,number]
+    end
+
+    def set_value(index, new_value)
+      @v[index]=new_value if index>=0 && index<@v.size
+    end
+
+    # ===========================================================
+
     private
+
+
+    def oper(other_array, op)
+      return self if other_array.nil?
+      raise NilVectorError if @v.nil? || (other_array.is_a?(TimeArray) && other_array.v.nil?)
+
+      c = self.clone
+      if other_array.is_a? Numeric
+        default_value = other_array
+      else
+        c.align_with(other_array)
+      end
+      
+      # c.data(Array.new(other_array.size){[:+, :-].include?(op) ? 0.0 : 1.0}) if @v.nil?
+      c.size.times do |i|
+        c.set_value(i, c.value(i).to_f.send(op, (default_value || other_array.value(i) || 0.0)))
+      end
+      c
+    end
 
     def set_values(data)
       # the values are always stored as hour values

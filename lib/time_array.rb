@@ -1,6 +1,7 @@
 %w(
   version
   vector
+  exceptions
   time_array
   hour_array
   array_ext

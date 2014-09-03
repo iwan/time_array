@@ -10,6 +10,17 @@ RSpec.describe 'time array' do
   it 'init' do
     expect(a1).to be_an_instance_of(TimeArray::TimeArray)
     expect(a1.v).to be_an_instance_of(TimeArray::Vector)
+
+    expect(TimeArray::TimeArray.new("2013", [1], unit: :year).v.size).to eq(8760)
+    expect(TimeArray::TimeArray.new("2012", [1], unit: :year).v.size).to eq(8760+24) # lead year
+    expect(TimeArray::TimeArray.new("2013", [1], unit: :month).v.size).to eq(31*24)
+    expect(TimeArray::TimeArray.new("2013", [1], unit: :day).v.size).to eq(24)
+    expect(TimeArray::TimeArray.new("2013", [1], unit: :hour).v.size).to eq(1)
+
+    expect(TimeArray::TimeArray.new("2013-04-16", [1], unit: :year).v.size).to eq(8760)
+    expect(TimeArray::TimeArray.new("2013-04-16", [1], unit: :month).v.size).to eq(30*24)
+    expect(TimeArray::TimeArray.new("2013-04-16", [1], unit: :day).v.size).to eq(24)
+    expect(TimeArray::TimeArray.new("2013-04-16", [1], unit: :hour).v.size).to eq(1)
   end
 
   it 'unit option on initialize' do
@@ -177,5 +188,25 @@ RSpec.describe 'time array' do
     expect(a2.sum).to eq(sum)
   end
 
+  it 'get value at' do
+    expect(a1.value(0)).to eq(1)
+    expect(a1.value(1)).to eq(2)
+    expect(a1.value(2)).to eq(3)
+    expect(a1.value(20)).to be_nil # out of range!
+  end
 
+
+  it 'set value at' do
+    a1.set_value(0, 100)
+    a1.set_value(2, 234)
+    expect(a1.v).to eq([100,2,234])
+    a1.set_value(20, 3) # out of range!
+    expect(a1.v).to eq([100,2,234])
+  end
+
+  it 'get first x values' do
+    arr = Array.new(100){|i| rand(1000)}
+    a = TimeArray::TimeArray.new("2013", arr, zone: "Rome", unit: :hour)
+    expect(a.first_values(23)).to eq(arr[0...23])
+  end
 end
