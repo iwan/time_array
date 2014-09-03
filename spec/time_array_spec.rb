@@ -159,6 +159,23 @@ RSpec.describe 'time array' do
     a2 = TimeArray::TimeArray.new("2013-03-04 13", [1,2,3,4,5], zone: "Rome")
     a3 = TimeArray::TimeArray.new("2013-03-04 14", [4,5], zone: "London")
     expect(a2.align_with(a3).v).to eq([3,4])
-
   end
+
+  it 'print values' do
+    a2 = TimeArray::TimeArray.new("2013-03-04 13", [1,2,3], zone: "Rome")
+    aa = a2.print_values.split("\n")
+    expect(aa.first.split("\t")).to eq(["2013-03-04 13:00 Mon", "1"])
+  end
+
+  it 'fill until the end of the year' do
+    a2 = TimeArray::TimeArray.new("2013-02", [10,20,30])
+    value = 1
+    a2.until_the_end_of_the_year(value)
+    size = 8760 - 31*24
+    sum = size*value -3 + 10+20+30
+    expect(a2.size).to eq(size)
+    expect(a2.sum).to eq(sum)
+  end
+
+
 end

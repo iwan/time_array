@@ -143,6 +143,38 @@ module TimeArray
     end
 
 
+    def print_values
+      start_time = @start_time - 1.hour
+      @v.collect{|v| "#{(start_time+=1.hour).strftime('%Y-%m-%d %H:%M %a')}\t#{v}" }.join("\n")
+    end
+
+    def to_s
+      "Start time: #{@start_time}\nData (size: #{@v.size}):\n#{print_values}"
+    end
+
+    def until_the_end_of_the_year(fill_value=0.0)
+      t = Time.zone.parse("#{@start_time.year+1}-01-01")
+      hh = (t-@start_time)/( 60 * 60) # final size
+      @v += Vector.new(hh-@v.size, fill_value) if hh>@v.size
+      self
+    end
+
+    def +(vec)
+      oper(vec, :+)
+    end
+
+    def -(vec)
+      oper(vec, :-)
+    end
+
+    def *(vec)
+      oper(vec, :*)
+    end
+
+    def /(vec)
+      oper(vec, :/)
+    end
+
     private
 
     def set_values(data)

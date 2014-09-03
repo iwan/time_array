@@ -48,4 +48,9 @@ RSpec.describe 'vector' do
     expect(v1.clone).not_to equal(v1)
     expect(v1.clone).to eq(v1)
   end
+
+  it 'sum vectors' do
+    v2 = TimeArray::Vector.new([0,1,2,-3,0,2,-1])
+    expect(v1+v2).to be_an_instance_of(TimeArray::Vector)
+  end
 end
