@@ -43,5 +43,9 @@ module TimeArray
     def count_all
       size
     end
+
+    def +(o)
+      Vector.new(super(o)) # recast
+    end
   end
 end
