@@ -115,7 +115,8 @@ module TimeArray
     end
 
     def clear_data
-      @v = @start_time.nil? ? nil : Vector.new
+      raise NilStartTimeError if @start_time.nil?
+      @v = Vector.new
       self
     end
 
@@ -123,28 +124,47 @@ module TimeArray
       self.start_time==other_array.start_time && @v.size==other_array.size
     end
 
+    def align_with(other_array)
+      # @start_time    = other_array.start_time if @start_time.nil? # ====
+      return self if empty?
+      return clear_data if other_array.empty?
+        
+      
+      new_start_time = [start_time, other_array.start_time].max
+      new_end_time   = [end_time,   other_array.end_time].min
+
+      if end_time.nil? || other_array.end_time.nil? || new_start_time>new_end_time
+        clear_data
+      else
+        @v = @v[((new_start_time-start_time)/3600).to_i, 1+((new_end_time-new_start_time)/3600).to_i]
+      end
+      @start_time = new_start_time
+      self      
+    end
 
 
     private
 
     def set_values(data)
       # the values are always stored as hour values
-      if unit==:hour
-        @v = Vector.new(data)
-      else
-        start_time = (@start_time.nil? ? nil : @start_time.clone)
-        @v = Vector.new(data.size)
+      @v = @unit==:hour ? Vector.new(data) : expand(data)
+    end
 
-        prev_value = start_time.send(@unit)
-        data.each do |v|
-          while start_time.send(@unit)==prev_value
-            @v << v
-            start_time+=1.hour
-          end
-          prev_value = start_time.send(unit)
+
+    def expand(data)
+      vector = Vector.new
+      raise NilStartTimeError if @start_time.nil?
+      start_time = @start_time.clone
+
+      prev_value = start_time.send(@unit)
+      data.each do |v|
+        while start_time.send(@unit)==prev_value
+          vector << v
+          start_time+=1.hour
         end
+        prev_value = start_time.send(@unit)
       end
-
+      vector
     end
 
     def set_start_time(start_time)

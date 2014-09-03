@@ -130,11 +130,35 @@ RSpec.describe 'time array' do
 
   it 'aligned with' do
     a2 = TimeArray::TimeArray.new("2013", [1,2,3], zone: "Rome")
-    a3 = TimeArray::TimeArray.new("2013", [0,3,0], zone: "Rome")
-    expect(a2.aligned_with?(a3)).to eq(true)
+    expect(a2.aligned_with?(TimeArray::TimeArray.new("2013", [0,3,0], zone: "Rome"))).to eq(true)
     expect(a2.aligned_with?(TimeArray::TimeArray.new("2013", [0,3], zone: "Rome"))).to eq(false)
     expect(a2.aligned_with?(TimeArray::TimeArray.new("2013", [0,3,4], zone: "London"))).to eq(false)
     expect(a2.aligned_with?(TimeArray::TimeArray.new("2012", [0,3,4], zone: "Rome"))).to eq(false)
+  end
+
+  it 'align with' do
+    # case 1. Different data size
+    a2 = TimeArray::TimeArray.new("2013", [1,2,3], zone: "Rome")
+    a3 = TimeArray::TimeArray.new("2013", [4,5], zone: "Rome")
+    expect(a2.align_with(a3).v).to eq([1,2])
+    a3 = TimeArray::TimeArray.new("2013", [], zone: "Rome")
+    expect(a2.align_with(a3).v).to eq([])
+
+    # case 2. Different zone
+    a2 = TimeArray::TimeArray.new("2013", [1,2,3], zone: "Rome")
+    a3 = TimeArray::TimeArray.new("2013", [4,5,6], zone: "London")
+    expect(a2.align_with(a3).v).to eq([2,3])
+    a2 = TimeArray::TimeArray.new("2013", [1,2,3], zone: "Rome")
+    expect(a3.align_with(a2).v).to eq([4,5])
+
+    a2 = TimeArray::TimeArray.new("2013", [1,2,3], zone: "Rome", unit: :day)
+    a3 = TimeArray::TimeArray.new("2013", [4,5,6], zone: "London", unit: :day)
+    expect(a2.align_with(a3).size).to eq(24*3-1)
+
+    # case 2. Different start time (and zone and size)
+    a2 = TimeArray::TimeArray.new("2013-03-04 13", [1,2,3,4,5], zone: "Rome")
+    a3 = TimeArray::TimeArray.new("2013-03-04 14", [4,5], zone: "London")
+    expect(a2.align_with(a3).v).to eq([3,4])
 
   end
 end
