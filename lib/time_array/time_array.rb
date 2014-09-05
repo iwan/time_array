@@ -188,6 +188,17 @@ module TimeArray
       @v[index]=new_value if index>=0 && index<@v.size
     end
 
+    def group_by(interval)
+      raise ArgumentError, "interval not valid. Valid intervals are :hour, :day, :wday, :month" unless Units.valid?(interval)
+      t = start_time
+      h = GroupHash.new{|h,k| h[k]=[]}
+      @v.each do |v|
+        h[t.send(interval)]<<v
+        t+=1.hour
+      end
+      h
+    end
+
     # ===========================================================
 
     private
