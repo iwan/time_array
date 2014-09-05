@@ -2,8 +2,8 @@
 
 [![Build Status](https://travis-ci.org/iwan/time_array.png)](https://travis-ci.org/iwan/time_array)
 [![Coverage Status](https://img.shields.io/coveralls/iwan/time_array.svg)](https://coveralls.io/r/iwan/time_array)
-
-Define a tool (a class) to deal with time related arrays: sums, multiplications, and so on.
+[![Code Climate](https://codeclimate.com/github/iwan/time_array/badges/gpa.svg)](https://codeclimate.com/github/iwan/time_array)
+Define a tool (a class) to deal with time-related arrays: sums, multiplications, and so on.
 
 ## Installation
 
@@ -23,6 +23,7 @@ Or install it yourself as:
 
 ```ruby
 include TimeArray
+
 time_arr = TimeArray::TimeArray.new("2014", [2.3], unit: :year)
 ```
 Generate a time-related array: 8760 elements of '2.3' values, one for each hour in the year 2014.
