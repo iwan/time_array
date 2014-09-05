@@ -60,22 +60,36 @@ time_arr.size   # => 24*3
 The other option you can specify is the time zone (by default is 'Rome'), TimeArray use ActiveSupport::TimeWithZone to store the time data.
 
 ```ruby
-time_arr = [1,2,3].timed("2014", zone: "Rome)
+time_arr = [1,2,3].timed("2014", zone: "Rome")
 time_arr.size   # => 3
 ```
 
 ### Operations
 
 ```ruby
-a = [12].timed("2014")
-b = [4].timed("2014")
-a+b   # => will be an array of [16,16,16,...]
-a-b   # => will be an array of [8,8,8,...]
-a*b   # => will be an array of [48,48,48,...]
-a/b   # => will be an array of [3,3,3,...]
+a = [12].timed("2014", unit: :year)
+b = [4].timed("2014", unit: :year)
+a+b   # => will be an array of [16,16,16,...], size of 8760
+a-b   # => will be an array of [8,8,8,...], size of 8760
+a*b   # => will be an array of [48,48,48,...], size of 8760
+a/b   # => will be an array of [3,3,3,...], size of 8760
 ```
+If you sum two arrays that are not aligned (in term of time), the result of the operation will be applied to the intersection of the two arrays:
 
+```ruby
+a = [12].timed("2014", unit: :day)  # size of 24
+b = [4, 3].timed("2014", unit: :day)  # size of 48
+a.aligned_with? b   # => false
+a+b   # => will be an array of [16,16,16,...], size of 24
+```
+The same goes for time_arrays defined in two different time zones:
 
+```ruby
+a = [1,2,3,4,5].timed("2014", zone: "Rome")
+b = [1,2,3].timed("2014", zone: "London")
+a.aligned_with? b   # => false
+a+b   # => [3,5,7]
+```
 
 
 ## Contributing
