@@ -15,3 +15,6 @@ puts a.v.inspect
 
 
 puts [1,2,3].timed("2014", unit: :day).size
+
+puts arr.group_by(:day)
+puts arr.group_by(:hour)

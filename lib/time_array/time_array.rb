@@ -5,6 +5,7 @@ require 'active_support/core_ext/hash'
 
 
 module TimeArray
+  # include Compactor
   class TimeArray
     attr_reader :start_time, :v, :unit
 
@@ -197,6 +198,43 @@ module TimeArray
         t+=1.hour
       end
       h
+    end
+
+    # Find the greatest unit time.
+    # If the values are contant along the month, the
+    # greatest unit is :month
+    def greatest_unit
+      arr = @v.clone
+      vv = arr.shift
+      t = CompactorTime.new(@start_time)
+      g_unit = GreatestUnit.new(:year)
+
+      arr.each do |v|
+        if v!=vv
+          interval = t.change(@unit)
+          g_unit.set(interval)
+          vv = v
+          break if g_unit.smallest==interval
+        end
+        t.increment!(@unit)
+      end
+      g_unit.c
+    end
+
+    # Will return a Compact object, a compacted version of values
+    # compact.gu gives the greatest_unit, compact.v gives the values array
+    def compact
+      gu = greatest_unit
+      return Compact.new(@v, gu) if gu==:hour
+      i, st, v = 0, @start_time, []
+      while i<@v.size
+        v << @v[i]
+        next_st = st+1.send(gu)
+        h = (next_st-st)/3600
+        i = i+h.to_i
+        st = next_st
+      end
+      Compact.new(v, gu)
     end
 
     # ===========================================================
