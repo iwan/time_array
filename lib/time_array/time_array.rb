@@ -5,12 +5,11 @@ require 'active_support/core_ext/hash'
 
 
 module TimeArray
-  # include Compactor
   class TimeArray
     attr_reader :start_time, :v, :unit
 
     def initialize(start_time, values=Vector.new, options={})
-      manage_options(options)
+      manage_options options
       set_start_time start_time
       set_values     values      
     end

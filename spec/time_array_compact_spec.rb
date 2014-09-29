@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'active_support/core_ext/time/zones'
 
 RSpec.describe 'compactor' do
   subject(:year) { "2013" }
@@ -8,7 +9,8 @@ RSpec.describe 'compactor' do
   subject(:h_arr) { (1..8760).to_a.map{|e| e%2==0 ? 1.2 : 2.98} }
 
   def build_array(year, step)
-    t0 = Time.parse("#{year}-01-01")
+    Time.zone = "Rome"
+    t0 = Time.zone.parse("#{year}-01-01")
     t1 = t0+1.year
     size = (t1-t0)/3600
     Array.new(size){|i| (t0+i.hours).send(step) }
