@@ -205,6 +205,7 @@ module TimeArray
     def greatest_unit
       arr = @v.clone
       vv = arr.shift
+      arr.push(arr.last+1) # add a value to the end, different to the last one
       t = CompactorTime.new(@start_time)
       g_unit = GreatestUnit.new(:year)
 
@@ -235,6 +236,8 @@ module TimeArray
       end
       Compact.new(v, gu)
     end
+
+
 
     # ===========================================================
 

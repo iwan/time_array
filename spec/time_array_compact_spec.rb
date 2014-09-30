@@ -8,7 +8,7 @@ RSpec.describe 'compactor' do
   subject(:d_arr) { (1..365).to_a.map{|e| e%2==0 ? 1.2 : 2.98} }
   subject(:h_arr) { (1..8760).to_a.map{|e| e%2==0 ? 1.2 : 2.98} }
 
-  def build_array(year, step)
+  def build_flat_array(year, step)
     Time.zone = "Rome"
     t0 = Time.zone.parse("#{year}-01-01")
     t1 = t0+1.year
@@ -18,7 +18,7 @@ RSpec.describe 'compactor' do
 
   context 'initial unit is hour' do
     it "compact month to hour" do
-      arr = build_array(2013, :month)
+      arr = build_flat_array(2013, :month)
       ta = TimeArray::TimeArray.new(year, arr)
       expect(ta.greatest_unit).to eq(:month)
 
@@ -28,7 +28,7 @@ RSpec.describe 'compactor' do
     end
 
     it "compact day to hour" do
-      arr = build_array(2013, :day)
+      arr = build_flat_array(2013, :day)
       ta = TimeArray::TimeArray.new(year, arr)
       expect(ta.greatest_unit).to eq(:day)
 
@@ -40,6 +40,16 @@ RSpec.describe 'compactor' do
     it "cannot compact" do
       ta = TimeArray::TimeArray.new(year, h_arr)
       expect(ta.greatest_unit).to eq(:hour)
+    end
+
+    it "compact an array shorten than year" do
+      arr = Array.new(24, 1.4)
+      ta = TimeArray::TimeArray.new(year, arr)
+      expect(ta.greatest_unit).to eq(:day)
+
+      arr = Array.new(24*31, 1.4)
+      ta = TimeArray::TimeArray.new(year, arr)
+      expect(ta.greatest_unit).to eq(:month)
     end
   end
 
