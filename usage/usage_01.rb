@@ -18,3 +18,6 @@ puts [1,2,3].timed("2014", unit: :day).size
 
 puts arr.group_by(:day)
 puts arr.group_by(:hour)
+
+
+puts arr.start_time.strftime("%Y-%m-%d %H:%M")

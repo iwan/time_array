@@ -27,10 +27,9 @@ module TimeArray
       TimeArray.new(@start_time, (@v.clone rescue Vector.new), zone: Time.zone.name)
     end
 
-    # Set all vector values to a new value
+    # Set array values to the given new value
     def all_to(new_value)
       @v = Vector.new(@v.size, new_value)
-      # @v.map!{|e| e=new_value}
       self
     end
 
@@ -239,6 +238,23 @@ module TimeArray
 
 
 
+    def if_zero_then(other_array)
+      return self if other_array.nil?
+      raise NilVectorError if @v.nil? || (other_array.is_a?(TimeArray) && other_array.v.nil?)
+
+      c = self.clone
+      if other_array.is_a? Numeric
+        default_value = other_array
+      else
+        c.align_with(other_array)
+      end
+      
+      c.size.times do |i|
+        c.set_value(i, default_value || other_array.value(i) || 0.0) if c.value(i).zero?
+      end
+      c
+    end
+    alias_method :if_zero, :if_zero_then
     # ===========================================================
 
     private

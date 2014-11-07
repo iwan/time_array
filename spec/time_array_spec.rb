@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe 'time array' do
+describe TimeArray do
   subject(:a1) { TimeArray::TimeArray.new("2013", [1,2,3], zone: "Rome", unit: :hour) }
   values = [1,2,3]
   subject(:v1) { [0,1,2,-3,0,2,-1] }
@@ -208,5 +208,30 @@ RSpec.describe 'time array' do
     arr = Array.new(100){|i| rand(1000)}
     a = TimeArray::TimeArray.new("2013", arr, zone: "Rome", unit: :hour)
     expect(a.first_values(23)).to eq(arr[0...23])
+  end
+
+
+  describe "#if_zero_then" do
+    it "compare to another timearray" do
+      a = TimeArray::TimeArray.new("2013", [1,2,0,4,5,0,7,0,0], zone: "Rome", unit: :hour)
+      b = TimeArray::TimeArray.new("2013", [9,0,7,6,5,4,3,0,1], zone: "Rome", unit: :hour)
+
+      expect(a.if_zero_then(b).v).to eq([1,2,7,4,5,4,7,0,1])
+      expect(b.if_zero_then(a).v).to eq([9,2,7,6,5,4,3,0,1])
+    end
+
+    it "compare to a number" do
+      a = TimeArray::TimeArray.new("2013", [1,2,0,4,5,0,7,0,0], zone: "Rome", unit: :hour)
+      expect(a.if_zero_then(10).v).to eq([1,2,10,4,5,10,7,10,10])
+    end
+
+  end
+  it "get other if zero" do
+    a = TimeArray::TimeArray.new("2013", [1,2,0,4,5,0,7,0,0], zone: "Rome", unit: :hour)
+    b = TimeArray::TimeArray.new("2013", [9,0,7,6,5,4,3,0,1], zone: "Rome", unit: :hour)
+
+    c = a.if_zero(b)
+    expect(a.if_zero(b).v).to eq([1,2,7,4,5,4,7,0,1])
+    expect(b.if_zero(a).v).to eq([9,2,7,6,5,4,3,0,1])
   end
 end
