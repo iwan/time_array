@@ -8,6 +8,18 @@ module TimeArray
   class TimeArray
     attr_reader :start_time, :v, :unit
 
+    # Used by each method
+    class TimeAndValue
+      attr_reader :time, :value
+      def initialize(time, value)
+        @time  = time
+        @value = value
+      end
+
+      alias_method :datetime, :time
+      alias_method :v, :value
+    end
+
     def initialize(start_time, values=Vector.new, options={})
       manage_options options
       set_start_time start_time
@@ -255,6 +267,16 @@ module TimeArray
       c
     end
     alias_method :if_zero, :if_zero_then
+
+    # Iterates each hour, the elements are TimeAndValue objects
+    # time_array.each do |el|
+    #   e.time
+    #   e.value
+    # end
+    def each(&block)
+      arr = @v.map.with_index{|v, i| TimeAndValue.new(@start_time+i.hours, v)}
+      arr.each(&block)
+    end
     # ===========================================================
 
     private

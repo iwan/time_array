@@ -226,6 +226,26 @@ describe TimeArray do
     end
 
   end
+
+  describe "#each" do
+    it "get values" do
+      a = TimeArray::TimeArray.new("2013", [1,2,3,4], zone: "Rome", unit: :hour)
+      a.each.with_index do |el, i|
+        expect(el.value).to eq(i+1)
+        expect(el.v).to eq(i+1) # alias
+      end
+    end
+
+    it "get datetimes" do
+      a = TimeArray::TimeArray.new("2013", [1,2,3,4], zone: "Rome", unit: :hour)
+      
+      a.each.with_index do |el, i|
+        expect(el.datetime).to eq(a.start_time+i.hours)
+        expect(el.time).to eq(a.start_time+i.hours) # alias
+      end
+    end
+  end
+
   it "get other if zero" do
     a = TimeArray::TimeArray.new("2013", [1,2,0,4,5,0,7,0,0], zone: "Rome", unit: :hour)
     b = TimeArray::TimeArray.new("2013", [9,0,7,6,5,4,3,0,1], zone: "Rome", unit: :hour)
