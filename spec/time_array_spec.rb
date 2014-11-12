@@ -231,6 +231,15 @@ describe TimeArray do
     it "get values" do
       a = TimeArray::TimeArray.new("2013", [1,2,3,4], zone: "Rome", unit: :hour)
       a.each.with_index do |el, i|
+        expect(el).to eq(i+1)
+      end
+    end
+  end
+
+  describe "#each_with_time" do
+    it "get values" do
+      a = TimeArray::TimeArray.new("2013", [1,2,3,4], zone: "Rome", unit: :hour)
+      a.each_with_time.with_index do |el, i|
         expect(el.value).to eq(i+1)
         expect(el.v).to eq(i+1) # alias
       end
@@ -239,7 +248,7 @@ describe TimeArray do
     it "get datetimes" do
       a = TimeArray::TimeArray.new("2013", [1,2,3,4], zone: "Rome", unit: :hour)
       
-      a.each.with_index do |el, i|
+      a.each_with_time.with_index do |el, i|
         expect(el.datetime).to eq(a.start_time+i.hours)
         expect(el.time).to eq(a.start_time+i.hours) # alias
       end

@@ -274,6 +274,16 @@ module TimeArray
     #   e.value
     # end
     def each(&block)
+      @v.each &block
+    end
+
+
+    # Iterates each hour, the elements are TimeAndValue objects
+    # time_array.each_with_time do |el|
+    #   e.time
+    #   e.value
+    # end
+    def each_with_time(&block)
       arr = @v.map.with_index{|v, i| TimeAndValue.new(@start_time+i.hours, v)}
       arr.each(&block)
     end
