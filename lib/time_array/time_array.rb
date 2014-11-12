@@ -268,10 +268,9 @@ module TimeArray
     end
     alias_method :if_zero, :if_zero_then
 
-    # Iterates each hour, the elements are TimeAndValue objects
-    # time_array.each do |el|
-    #   e.time
-    #   e.value
+    # Iterates each hour, the elements are the values of array
+    # time_array.each do |value|
+    #   value
     # end
     def each(&block)
       @v.each &block
