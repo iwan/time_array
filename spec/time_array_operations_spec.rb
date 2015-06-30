@@ -56,9 +56,10 @@ RSpec.describe 'operations' do
     b = TimeArray::TimeArray.new(year.to_s, [1], unit: :year)
     b = b.month_sum
     h = {}
+    Time.zone = "Rome"
     12.times do |m|
-      t1 = Time.new(year,m+1,1)
-      t2 = Time.new(year,m+1,1)+1.month
+      t1 = Time.zone.parse("#{year}-#{m+1}-01 00:00")
+      t2 = t1+1.month
       t3 = (t2-t1)/3600
       hours = t3.to_i
       h[m+1] = hours
