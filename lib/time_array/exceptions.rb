@@ -6,4 +6,9 @@ module TimeArray
   class NilVectorError < RuntimeError
     
   end
+
+
+  class DateTimeOutRangeError < RuntimeError
+    
+  end
 end

@@ -268,12 +268,41 @@ module TimeArray
     end
     alias_method :if_zero, :if_zero_then
 
+
+    def month_sum
+      h = {}
+      @v.each_with_index do |value, i|
+        time = @start_time + i.hours
+        h[time.month] ||= 0.0
+        h[time.month] += value
+      end
+      c = self.clone 
+      c.size.times do |i|
+        time = @start_time + i.hours
+        c.set_value(i, h[time.month])
+      end
+      c
+    end
+
     # Iterates each hour, the elements are the values of array
     # time_array.each do |value|
     #   value
     # end
     def each(&block)
       @v.each &block
+    end
+
+
+    # Get value associated to a date
+    def value_at(datetime_or_year, month=nil, day=nil, hour=nil)
+      if datetime_or_year.is_a? Time
+        dt = datetime_or_year
+      else
+        dt = Time.zone.parse("#{datetime_or_year}-#{month}-#{day} #{hour}:00")
+      end
+      i = ((dt - @start_time)/3600.0).to_i
+      raise DateTimeOutRangeError if i<0 || i>(size-1)
+      value(i)
     end
 
 
