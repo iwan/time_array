@@ -284,6 +284,29 @@ module TimeArray
       c
     end
 
+    # get the count of month hours
+    def month_count
+      h = {}
+      @v.size.times do |i|
+        time = @start_time + i.hours
+        h[time.month] ||= 0.0
+        h[time.month] += 1
+      end
+
+      # @v.each_with_index do |value, i|
+      #   time = @start_time + i.hours
+      #   h[time.month] ||= 0.0
+      #   h[time.month] += 1
+      # end
+      
+      c = self.clone 
+      c.size.times do |i|
+        time = @start_time + i.hours
+        c.set_value(i, h[time.month])
+      end
+      c
+    end
+
     # Iterates each hour, the elements are the values of array
     # time_array.each do |value|
     #   value
