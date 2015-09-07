@@ -307,6 +307,13 @@ module TimeArray
       c
     end
 
+    # execute the block (likely a calculation) on each vector element.
+    # and return a new time_array obj
+    def execute(&block)
+      v = @v.map &block
+      TimeArray.new(@start_time, v, zone: Time.zone.name)
+    end
+
     # Iterates each hour, the elements are the values of array
     # time_array.each do |value|
     #   value
@@ -382,6 +389,7 @@ module TimeArray
       end
       vector
     end
+
 
     def set_start_time(start_time)
       st = read_start_time(start_time)

@@ -126,15 +126,22 @@ RSpec.describe 'operations' do
 
     end
 
-    context '#month_count' do
-      it "does something" do
-        a = a1.month_count
-        expect(a.value(0)).to eq(24*31)
-        expect(a.value(1)).to eq(24*31)
-        expect(a.value(24*31)).to eq(24*28)
-        expect(a.value(24*31+24*28)).to eq(24*31-1) # because of daylight saving time
-        expect(a.value(a.size-1)).to eq(24*31)
+    it "#month_count" do
+      a = a1.month_count
+      expect(a.value(0)).to eq(24*31)
+      expect(a.value(1)).to eq(24*31)
+      expect(a.value(24*31)).to eq(24*28)
+      expect(a.value(24*31+24*28)).to eq(24*31-1) # because of daylight saving time
+      expect(a.value(a.size-1)).to eq(24*31)
+    end
+
+    it '#execute' do
+      b = a1.execute do |v|
+        2 * v + 1
       end
+      expect(b.value(0)).to eq(2*2.1+1)
+      expect(b.value(1000)).to eq(2*2.1+1)
+      expect(b.value(b.size-1)).to eq(2*2.1+1)
     end
   end
 end
