@@ -1,4 +1,6 @@
 module TimeArray
+
+
   class CompactorTime
     attr_reader :time
     def initialize(t)
@@ -21,6 +23,7 @@ module TimeArray
       @time = increment(step)
     end
   end
+
 
   class GreatestUnit
     H = {eternity: 5, year: 4, month: 3, day: 2, hour: 1}
@@ -49,5 +52,28 @@ module TimeArray
     alias :values :v
     alias :array :v
     
+  end
+
+  class Unit
+    ETERNITY = 4
+    YEAR     = 3
+    MONTH    = 2
+    DAY      = 1
+    HOUR     = 0
+    
+    def self.name(num)
+      case num
+      when ETERNITY
+        :eternity
+      when YEAR
+        :year
+      when MONTH
+        :month
+      when DAY
+        :day
+      else
+        :hour
+      end
+    end
   end
 end

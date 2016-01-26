@@ -210,32 +210,12 @@ module TimeArray
       h
     end
 
-    # Find the greatest unit time.
-    # If the values are contant along the month, the
-    # greatest unit is :month
-    def greatest_unit
-      arr = @v.clone
-      vv = arr.shift
-      arr.push(arr.last+1) # add a value to the end, different to the last one
-      t = CompactorTime.new(@start_time)
-      g_unit = GreatestUnit.new(:year)
-
-      arr.each do |v|
-        if v!=vv
-          interval = t.change(@unit)
-          g_unit.set(interval)
-          vv = v
-          break if g_unit.smallest==interval
-        end
-        t.increment!(@unit)
-      end
-      g_unit.c
-    end
 
     # Will return a Compact object, a compacted version of values
     # compact.gu gives the greatest_unit, compact.v gives the values array
     def compact
       gu = greatest_unit
+      puts "gu: #{gu.inspect}"
       return Compact.new(@v, gu) if gu==:hour
       i, st, v = 0, @start_time, []
       while i<@v.size
@@ -246,6 +226,38 @@ module TimeArray
         st = next_st
       end
       Compact.new(v, gu)
+    end
+
+
+    # Find the greatest unit time.
+    # If the values are contant along the month, the
+    # greatest unit is :month
+    def greatest_unit
+      v = @v.first
+      unit = Unit::YEAR # Unit::ETERNITY
+      each_with_time do |el|
+
+        # el.time
+        # el.value
+        if v!=el.value
+          if el.time.year_changed? and unit>Unit::YEAR
+            unit = Unit::YEAR
+          else
+            if el.time.month_changed? and unit>Unit::MONTH
+              unit = Unit::MONTH
+            else
+              if el.time.day_changed? and unit>Unit::DAY
+                unit = Unit::DAY
+              else
+                unit = Unit::HOUR
+                break
+              end
+            end
+          end
+        end
+        v = el.value
+      end
+      return Unit.name(unit)
     end
 
 
