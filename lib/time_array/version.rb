@@ -1,3 +1,3 @@
 module TimeArray
-  VERSION = "0.5.7.4"
+  VERSION = "0.5.7.5"
 end
