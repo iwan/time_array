@@ -3,6 +3,8 @@ require 'active_support/core_ext/time/calculations'
 require 'active_support/core_ext/numeric/time'
 require 'active_support/core_ext/hash'
 
+# require 'byebug'
+
 
 module TimeArray
   class TimeArray
@@ -236,17 +238,15 @@ module TimeArray
       v = @v.first
       unit = Unit::YEAR # Unit::ETERNITY
       each_with_time do |el|
-
-        # el.time
-        # el.value
+                
         if v!=el.value
-          if el.time.year_changed? and unit>Unit::YEAR
+          if el.time.year_changed? and unit>=Unit::YEAR
             unit = Unit::YEAR
           else
-            if el.time.month_changed? and unit>Unit::MONTH
+            if el.time.month_changed? and unit>=Unit::MONTH
               unit = Unit::MONTH
             else
-              if el.time.day_changed? and unit>Unit::DAY
+              if el.time.day_changed? and unit>=Unit::DAY
                 unit = Unit::DAY
               else
                 unit = Unit::HOUR
